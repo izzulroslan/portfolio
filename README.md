@@ -192,11 +192,11 @@ are fine—Vite rewrites them for you.
 
 ## 🙏 Credits
 
-This project started from a template by **Faris Edrik P** (GitHub **@rissss21**).
-Original repo: [https://github.com/rissss21/portofolio](https://github.com/rissss21/portofolio)
-
+### 🙏 Credits & Provenance
+This site is a **fork** of [Portofolio Web — Faris Edrik P (@rissss21)](https://github.com/rissss21/portofolio).
 He did an awesome job with the visual style and component ideas.
-I customized and extended it for my own portfolio (content, colors, 3D, Firebase chat, and deployment setup).
+I customized: project data/content, color system, 3D lanyard asset, Firebase wiring, and deployment setup.
+
 
 ---
 
