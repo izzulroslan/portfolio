@@ -192,9 +192,10 @@ are fine—Vite rewrites them for you.
 
 ## 🙏 Credits
 
-### 🙏 Credits & Provenance
 This site is a **fork** of [Portofolio Web — Faris Edrik P (@rissss21)](https://github.com/rissss21/portofolio).
+
 He did an awesome job with the visual style and component ideas.
+
 I customized: project data/content, color system, 3D lanyard asset, Firebase wiring, and deployment setup.
 
 
