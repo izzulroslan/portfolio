@@ -3,16 +3,22 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBFgA6JpGqNBrWPfR-lKercjvy5Y6ky7zc",
-  authDomain: "webportofolio-8498b.firebaseapp.com",
-  projectId: "webportofolio-8498b",
-  storageBucket: "webportofolio-8498b.firebasestorage.app",
-  messagingSenderId: "543954266098",
-  appId: "1:543954266098:web:029e84a24273fd15d62d6b"
+  apiKey: "AIzaSyALYAN4kHY_iUNn9yybROLfPdGVdGLOWyo",
+  authDomain: "izzul-portfolio-chat.firebaseapp.com",
+  projectId: "izzul-portfolio-chat",
+  storageBucket: "izzul-portfolio-chat.firebasestorage.app",
+  messagingSenderId: "205237780727",
+  appId: "1:205237780727:web:50f98c84997c38206893f2",
+  measurementId: "G-S2E6QYDYBY"
 };
 
-// Init Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 // Auth

@@ -1,11 +1,18 @@
+/* Lanyard.css */
 .lanyard-wrapper {
   position: relative;
-  z-index: 0;
-  width: 200vh;
-  height: 70vh;
+  z-index: 1;         /* was 0 — bump it so it sits above neighbors */
+  width: 100%;
+  height: 520px;      /* keep a fixed height so the rope has room */
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: scale(1);
-  transform-origin: center;
+  /* remove transforms here */
+}
+
+/* make sure the canvas fills the wrapper */
+.lanyard-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
 }

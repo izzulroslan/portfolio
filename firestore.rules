@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /messages/{id} {
+      allow read: if true;                           // public read
+      allow create: if request.auth != null;         // any signed-in user can send
+      allow update, delete: if request.auth != null && (
+        request.auth.token.email == "izzulroslan03@gmail.com" ||  // you = admin
+        request.auth.uid == resource.data.uid                      // or the author
+      );
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiX, FiGithub } from 'react-icons/fi'; // Install react-icons jika belum: npm install react-icons
 
-const ProjectModal = ({ isOpen, onClose, project }) => {
+const ProjectModal = ({ onClose, project }) => {
   // State untuk mengontrol animasi penutupan
   const [isClosing, setIsClosing] = useState(false);
 
@@ -15,21 +15,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
     }, 300);
   };
 
-  // Mencegah scroll di background saat modal terbuka
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    // Cleanup function
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isOpen]);
 
-
-  if (!isOpen) return null;
 
   return (
     // Overlay

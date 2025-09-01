@@ -7,8 +7,8 @@ import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphe
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 
 // replace with your own imports, see the usage snippet for details
-const cardGLB = "/portofolio/assets/card.glb";
-const lanyard = "/portofolio/assets/lanyard.png";
+const cardGLB = `${import.meta.env.BASE_URL}assets/card.glb`;
+const lanyard = `${import.meta.env.BASE_URL}assets/lanyard.png`;
 
 import * as THREE from 'three';
 import './Lanyard.css';
@@ -130,16 +130,15 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
           </group>
         </RigidBody>
       </group>
-      <mesh ref={band}>
+      <mesh ref={band} position={[0, 4, 0]}>
         <meshLineGeometry />
         <meshLineMaterial
-          color="white"
+          color="#a78bfa"
           depthTest={false}
           resolution={isSmall ? [1000, 2000] : [1000, 1000]}
-          useMap
+          useMap={false}
           map={texture}
-          repeat={[-4, 1]}
-          lineWidth={1}
+          lineWidth={4}
         />
       </mesh>
     </>

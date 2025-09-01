@@ -107,7 +107,7 @@ export default function ChatRoom() {
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Ketik pesan..."
+            placeholder="type a message..."
             className="flex-1 min-w-0 p-2 rounded-lg bg-zinc-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
@@ -130,7 +130,7 @@ export default function ChatRoom() {
             />
             Login with Google
           </button>
-          <p className="text-sm text-gray-400">Login untuk mengirim pesan</p>
+          <p className="text-sm text-gray-400">Login to send a message</p>
         </div>
       )}
     </div>

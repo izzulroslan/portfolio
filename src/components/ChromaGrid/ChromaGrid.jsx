@@ -2,10 +2,10 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import "./ChromaGrid.css";
 
-// Terima `onItemClick` di props
+// NEW: accept `enabled` (default true)
 export const ChromaGrid = ({
   items,
-  onItemClick, // Fungsi handler dari App.jsx
+  onItemClick,
   className = "",
   radius = 300,
   columns = 3,
@@ -13,6 +13,7 @@ export const ChromaGrid = ({
   damping = 0.45,
   fadeOut = 0.6,
   ease = "power3.out",
+  enabled = true, // <--- added
 }) => {
   const rootRef = useRef(null);
   const fadeRef = useRef(null);
@@ -20,7 +21,6 @@ export const ChromaGrid = ({
   const setY = useRef(null);
   const pos = useRef({ x: 0, y: 0 });
 
-  // Gunakan `items` yang di-pass dari App.jsx, bukan data demo
   const data = items?.length ? items : [];
 
   useEffect(() => {
@@ -32,9 +32,35 @@ export const ChromaGrid = ({
     pos.current = { x: width / 2, y: height / 2 };
     setX.current(pos.current.x);
     setY.current(pos.current.y);
+
+    // CLEANUP: kill any tweens on unmount
+    return () => {
+      gsap.killTweensOf(pos.current);
+      if (fadeRef.current) gsap.killTweensOf(fadeRef.current);
+    };
   }, []);
 
+  // NEW: pause/stop all animations when disabled (e.g., modal open)
+  useEffect(() => {
+    if (!enabled) {
+      // stop any ongoing tweens & restore neutral state
+      gsap.killTweensOf(pos.current);
+      if (fadeRef.current) {
+        gsap.killTweensOf(fadeRef.current);
+        gsap.set(fadeRef.current, { opacity: 1 });
+      }
+      // Optional: center the cursor light so it doesn't render offscreen
+      if (setX.current && setY.current && rootRef.current) {
+        const { width, height } = rootRef.current.getBoundingClientRect();
+        setX.current(width / 2);
+        setY.current(height / 2);
+      }
+    }
+  }, [enabled]);
+
   const moveTo = (x, y) => {
+    // if disabled, ignore moves
+    if (!enabled) return;
     gsap.to(pos.current, {
       x,
       y,
@@ -49,12 +75,14 @@ export const ChromaGrid = ({
   };
 
   const handleMove = (e) => {
+    if (!enabled) return;
     const r = rootRef.current.getBoundingClientRect();
     moveTo(e.clientX - r.left, e.clientY - r.top);
     gsap.to(fadeRef.current, { opacity: 0, duration: 0.25, overwrite: true });
   };
 
   const handleLeave = () => {
+    if (!enabled) return;
     gsap.to(fadeRef.current, {
       opacity: 1,
       duration: fadeOut,
@@ -63,6 +91,7 @@ export const ChromaGrid = ({
   };
 
   const handleCardMove = (e) => {
+    if (!enabled) return;
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -75,33 +104,36 @@ export const ChromaGrid = ({
     <div
       ref={rootRef}
       className={`chroma-grid ${className}`}
-      style={
-        {
-          "--r": `${radius}px`,
-          "--cols": columns,
-          "--rows": rows,
-        }
-      }
-      onPointerMove={handleMove}
-      onPointerLeave={handleLeave}
+      style={{
+        "--r": `${radius}px`,
+        "--cols": columns,
+        "--rows": rows,
+        // disable pointer events while disabled to avoid any hidden work
+        pointerEvents: enabled ? "auto" : "none",
+      }}
+      // only attach handlers when enabled
+      onPointerMove={enabled ? handleMove : undefined}
+      onPointerLeave={enabled ? handleLeave : undefined}
     >
       {data.map((c, i) => (
         <article
           key={i}
           className="chroma-card"
-          onMouseMove={handleCardMove}
-          // Panggil `onItemClick` saat kartu diklik dan kirim datanya
-          onClick={() => onItemClick(c)}
-          style={
-            {
-              "--card-border": c.borderColor || "transparent",
-              "--card-gradient": c.gradient,
-              cursor: "pointer", // Selalu pointer karena akan membuka modal
-            }
-          }
+          onMouseMove={enabled ? handleCardMove : undefined}
+          onClick={enabled ? () => onItemClick?.(c) : undefined}
+          style={{
+            "--card-border": c.borderColor || "transparent",
+            "--card-gradient": c.gradient,
+            cursor: enabled ? "pointer" : "default",
+          }}
         >
           <div className="chroma-img-wrapper">
-            <img src={c.image} alt={c.title} loading="lazy" />
+            <img
+              src={c.image}
+              alt={c.title}
+              loading="lazy"
+              decoding="async"   // <--- small perf win
+            />
           </div>
           <footer className="chroma-info">
             <h3 className="name">{c.title}</h3>
